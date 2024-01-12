@@ -2,17 +2,33 @@ import React, { useState } from 'react'
 
 const Problem1 = () => {
 	const [show, setShow] = useState('all')
+	const [list, setList] = useState([])
 
 	const handleClick = val => {
 		setShow(val)
 	}
+
+	const handleForm = e => {
+        e.preventDefault()
+        
+		const name = e.target[0].value
+		const status = e.target[1].value
+
+		setList(prev => [...prev, { name, status }])
+
+		// Clear form fields
+		e.target[0].value = ''
+		e.target[1].value = ''
+	}
+
+	console.log(list)
 
 	return (
 		<div className='container'>
 			<div className='row justify-content-center mt-5'>
 				<h4 className='text-center text-uppercase mb-5'>Problem-1</h4>
 				<div className='col-6 '>
-					<form className='row gy-2 gx-3 align-items-center mb-4'>
+					<form className='row gy-2 gx-3 align-items-center mb-4' onSubmit={handleForm}>
 						<div className='col-auto'>
 							<input type='text' className='form-control' placeholder='Name' />
 						</div>
@@ -26,6 +42,7 @@ const Problem1 = () => {
 						</div>
 					</form>
 				</div>
+
 				<div className='col-8'>
 					<ul className='nav nav-pills mb-3' id='pills-tab' role='tablist'>
 						<li className='nav-item'>
@@ -53,6 +70,7 @@ const Problem1 = () => {
 							</button>
 						</li>
 					</ul>
+
 					<div className='tab-content'></div>
 					<table className='table table-striped '>
 						<thead>
@@ -61,7 +79,14 @@ const Problem1 = () => {
 								<th scope='col'>Status</th>
 							</tr>
 						</thead>
-						<tbody></tbody>
+						<tbody>
+							{list.map(item => (
+								<tr key={item.name}>
+									<td>{item.name}</td>
+									<td>{item.status}</td>
+								</tr>
+							))}
+						</tbody>
 					</table>
 				</div>
 			</div>
