@@ -6,6 +6,7 @@ const Problem2 = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [filter, setFilter] = useState('all')
 	const [contacts, setContacts] = useState([])
+	const [keyword, setKeyword] = useState('')
 	const navigate = useNavigate()
 
 	const getContacts = async url => {
@@ -15,26 +16,17 @@ const Problem2 = () => {
 	}
 
 	useEffect(() => {
-		const fetchContacts = async () => {
-			const contacts = await getContacts('https://contact.mediusware.com/api/contacts/')
-			setContacts(contacts)
-		}
-
-		fetchContacts()
-	}, [])
-
-	useEffect(() => {
 		const filterContacts = async () => {
 			let filteredContacts = []
 
 			switch (filter) {
 				case 'all':
-					filteredContacts = await getContacts('https://contact.mediusware.com/api/contacts/')
+					filteredContacts = await getContacts(`https://contact.mediusware.com/api/contacts/`)
 					break
 
 				case 'us':
 					filteredContacts = await getContacts(
-						'https://contact.mediusware.com/api/country-contacts/United%20States/'
+						`https://contact.mediusware.com/api/country-contacts/United%20States/`
 					)
 					break
 			}
@@ -44,6 +36,34 @@ const Problem2 = () => {
 
 		filterContacts()
 	}, [filter])
+
+	const searchContacts = async () => {
+		let filteredContacts = []
+
+		switch (filter) {
+			case 'all':
+				filteredContacts = await getContacts(
+					`https://contact.mediusware.com/api/contacts/?search=${keyword}`
+				)
+				break
+
+			case 'us':
+				filteredContacts = await getContacts(
+					`https://contact.mediusware.com/api/country-contacts/United%20States/${keyword}`
+				)
+				break
+		}
+
+		setContacts(filteredContacts)
+	}
+
+	useEffect(() => {
+		const delaySearch = setTimeout(() => {
+			searchContacts()
+		}, 1000)
+
+		return () => clearTimeout(delaySearch)
+	}, [keyword])
 
 	return (
 		<>
@@ -81,7 +101,8 @@ const Problem2 = () => {
 				setIsModalOpen={setIsModalOpen}
 				contacts={contacts}
 				setFilter={setFilter}
-				setContacts={setContacts}
+				setKeyword={setKeyword}
+				searchContacts={searchContacts}
 			/>
 		</>
 	)

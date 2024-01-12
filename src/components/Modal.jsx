@@ -1,7 +1,14 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-export default function Modal({ isModalOpen, setIsModalOpen, contacts, setFilter }) {
+export default function Modal({
+	isModalOpen,
+	setIsModalOpen,
+	contacts,
+	setFilter,
+	setKeyword,
+	searchContacts
+}) {
 	const [contact, setContact] = useState(null)
 	const [isEven, setIsEven] = useState(false)
 	const navigate = useNavigate()
@@ -59,6 +66,18 @@ export default function Modal({ isModalOpen, setIsModalOpen, contacts, setFilter
 						</div>
 
 						<div className='modal-body'>
+							<form
+								onSubmit={e => {
+									e.preventDefault()
+									searchContacts()
+								}}>
+								<input
+									type='text'
+									className='form-control'
+									placeholder='Search'
+									onChange={e => setKeyword(e.target.value)}
+								/>
+							</form>
 							<table className='table table-striped'>
 								<thead>
 									<tr>
