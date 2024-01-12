@@ -8,7 +8,18 @@ const Problem1 = () => {
 		setShow(val)
 	}
 
-	const filtered = show === 'all' ? list : list.filter(item => item.status.toLowerCase() === show)
+	const filtered =
+		show === 'all'
+			? [
+					...list.filter(item => item.status.toLowerCase() === 'active'),
+					...list.filter(item => item.status.toLowerCase() === 'completed'),
+					...list.filter(
+						item =>
+							item.status.toLowerCase() !== 'active' &&
+							item.status.toLowerCase() !== 'completed'
+					)
+			  ]
+			: list.filter(item => item.status.toLowerCase() === show)
 
 	const handleForm = e => {
 		e.preventDefault()
