@@ -8,9 +8,11 @@ const Problem1 = () => {
 		setShow(val)
 	}
 
+	const filtered = show === 'all' ? list : list.filter(item => item.status.toLowerCase() === show)
+
 	const handleForm = e => {
-        e.preventDefault()
-        
+		e.preventDefault()
+
 		const name = e.target[0].value
 		const status = e.target[1].value
 
@@ -20,8 +22,6 @@ const Problem1 = () => {
 		e.target[0].value = ''
 		e.target[1].value = ''
 	}
-
-	console.log(list)
 
 	return (
 		<div className='container'>
@@ -80,7 +80,7 @@ const Problem1 = () => {
 							</tr>
 						</thead>
 						<tbody>
-							{list.map(item => (
+							{filtered?.map(item => (
 								<tr key={item.name}>
 									<td>{item.name}</td>
 									<td>{item.status}</td>
